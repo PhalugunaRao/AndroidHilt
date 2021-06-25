@@ -12,27 +12,36 @@ import javax.inject.Singleton
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    //field injection
     @Inject
     lateinit var someClass: SomeClass
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         println(someClass.doAThing())
-
     }
 }
 
-@AndroidEntryPoint
-class MyFragment :Fragment(){
-    @Inject
-    lateinit var someClass: SomeClass
+class SomeClass
+@Inject
+constructor(
+    private val someInterfaceImpl: SomeInterface
+){
+    fun doAThing(): String{
+        return "Look I got: ${someInterfaceImpl.getAthing()}"
+    }
 }
 
-@FragmentScoped
-class  SomeClass @Inject constructor(){
-    fun doAThing():String{
-        return "Look I did a thing!"
+class SomeInterfaceImpl
+@Inject
+constructor():SomeInterface{
+    override fun getAthing(): String {
+        return "A Thing"
     }
+}
+
+interface SomeInterface{
+    fun getAthing():String
 }
 
