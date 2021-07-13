@@ -11,9 +11,9 @@ import javax.inject.Singleton
 interface One{
     fun getName()
 }
-class ImplementOne @Inject constructor():One{
+class ImplementOne @Inject constructor(private val name:String):One{
     override fun getName() {
-        println("======my name is Geethika")
+        println("======my name is $name")
     }
 
 }
@@ -36,7 +36,14 @@ abstract class AppModule{
 @Module
 @InstallIn(ApplicationComponent::class)
 class AppModule{
+
     @Provides
     @Singleton
-    fun binding():One = ImplementOne()
+    fun getName():String="Geethika"
+
+    @Provides
+    @Singleton
+    fun binding(
+        name:String
+    ):One = ImplementOne(name)
 }
